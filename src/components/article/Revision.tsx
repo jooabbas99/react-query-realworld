@@ -5,6 +5,7 @@ import queryClient from '@/queries/queryClient';
 import { QUERY_ARTICLE_REVISIONS_KEY, QUERY_COMMENTS_KEY } from '@/constants/query.constant';
 import convertToDate from '@/lib/utils/convertToDate';
 import { IArticleRevision } from '@/interfaces/main';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface IRevisionProps {
   revisionsInfo: {
@@ -17,7 +18,7 @@ interface IRevisionProps {
 const Revision = ({ revisionsInfo, slug }: IRevisionProps) => {
   const { articlesRevisions } = revisionsInfo;
   const revertArticleUpdateMutation = useRevertArticleUpdateMutation();
-
+  const navigate = useNavigate();
   const onRevert = (slug: string, revision: number, newSlug: string) => {
     revertArticleUpdateMutation.mutate(
       { slug, revision },
@@ -25,7 +26,7 @@ const Revision = ({ revisionsInfo, slug }: IRevisionProps) => {
         onSuccess: (_) => {
           queryClient.invalidateQueries({ queryKey: [QUERY_ARTICLE_REVISIONS_KEY] });
           alert('Article reverted successfully!');
-          window.location.href = `/`;
+          navigate(`/article/${newSlug}`, { state: newSlug });
         },
       },
     );
