@@ -25,7 +25,7 @@ const Revision = ({ revisionsInfo, slug }: IRevisionProps) => {
         onSuccess: (_) => {
           queryClient.invalidateQueries({ queryKey: [QUERY_ARTICLE_REVISIONS_KEY] });
           alert('Article reverted successfully!');
-          window.location.href = `/articles`;
+          window.location.href = `/`;
         },
       },
     );
